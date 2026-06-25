@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/c2/(.*)", "destination": "/api/handler" },
+    { "source": "/api/webhooks/(.*)", "destination": "/api/handler" },
+    { "source": "/(.*)", "destination": "/api/handler" }
+  ]
+}

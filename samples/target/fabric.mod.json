@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "target_sample",
+  "version": "26.1.2",
+  "name": "Target Sample",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.example.target.TargetMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": ">=1.21"
+  }
+}

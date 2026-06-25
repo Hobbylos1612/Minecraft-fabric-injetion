@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "donor_injected_sample",
+  "version": "26.1.2",
+  "name": "Donor Injected Sample",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.example.donor.DonorInjectedMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": ">=1.21"
+  }
+}
