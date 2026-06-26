@@ -21,6 +21,9 @@ __pycache__/
 Thumbs.db
 .DS_Store
 
+# JOON RECOMP (separate project)
+JOON RECOMP/
+
 # Generated / build output
 jooon-reimagined-recomp/.kotlin/
 jooon-reimagined-recomp/build_output.txt
