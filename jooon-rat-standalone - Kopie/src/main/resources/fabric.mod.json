@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "template",
+  "version": "${version}",
+  "name": "Template Mod",
+  "description": "Template mod for research purposes",
+  "authors": [],
+  "license": "CC0-1.0",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "template.util.OverlayScreen"
+      }
+    ]
+  },
+  "jars": [
+    {
+      "file": "META-INF/jars/commons-logging-1.2.jar"
+    },
+    {
+      "file": "META-INF/jars/httpclient-4.5.13.jar"
+    },
+    {
+      "file": "META-INF/jars/httpcore-4.4.13.jar"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "minecraft": ">=1.21.11",
+    "java": ">=21",
+    "fabric-api": ">=0.141.1+1.21.11",
+    "fabric-language-kotlin": ">=1.10.20+kotlin.1.9.24"
+  }
+}

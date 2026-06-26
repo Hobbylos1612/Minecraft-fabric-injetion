@@ -1,0 +1,35 @@
+# Gradle
+.gradle/
+build/
+*/build/
+*/.gradle/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Kotlin
+.kotlin/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Generated / build output
+jooon-reimagined-recomp/.kotlin/
+jooon-reimagined-recomp/build_output.txt
+generated-donors/it-works-build/
+
+# Backup / injected copies
+*.bak
+*-injected.jar
+
+# Temp / sample
+tools/sample/
+tools/injected.jar

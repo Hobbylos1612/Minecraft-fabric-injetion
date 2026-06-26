@@ -1,0 +1,105 @@
+buildscript {
+    repositories { mavenCentral() }
+    dependencies {
+        classpath 'com.guardsquare:proguard-gradle:7.6.1'
+    }
+}
+
+plugins {
+    id 'fabric-loom' version "${loom_version}"
+    id 'maven-publish'
+    id 'org.jetbrains.kotlin.jvm' version "${kotlin_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+repositories {
+    maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    modImplementation "net.fabricmc:fabric-language-kotlin:${project.kotlin_fabric_version}"
+
+    // Embedded HTTP client JARs (needed for compilation)
+    implementation files("src/main/resources/META-INF/jars/httpclient-4.5.13.jar")
+    implementation files("src/main/resources/META-INF/jars/httpcore-4.4.13.jar")
+    implementation files("src/main/resources/META-INF/jars/commons-logging-1.2.jar")
+}
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 21
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
+jar {
+    inputs.property "projectName", project.name
+    from("LICENSE") {
+        rename { "${it}_${project.name}" }
+    }
+}
+
+task obfuscateRemappedJar(type: proguard.gradle.ProGuardTask) {
+    dependsOn remapJar
+    outputs.upToDateWhen { false }
+
+    def inJar = remapJar.archiveFile.get().asFile
+    def tmpJar = new File(temporaryDir, "obfuscated-${inJar.name}")
+
+    injars inJar
+    outjars tmpJar
+
+    libraryjars configurations.runtimeClasspath
+    libraryjars "${System.getProperty('java.home')}/jmods/java.base.jmod(!module-info.class)"
+    libraryjars "${System.getProperty('java.home')}/jmods/java.desktop.jmod(!module-info.class)"
+    libraryjars "${System.getProperty('java.home')}/jmods/java.logging.jmod(!module-info.class)"
+
+    dontwarn
+    ignorewarnings
+
+    keep 'class template.EntryPoint { *; }'
+
+    allowaccessmodification
+    overloadaggressively
+    useuniqueclassmembernames
+    repackageclasses 'obf'
+
+    doLast {
+        java.nio.file.Files.move(tmpJar.toPath(), inJar.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+    }
+}
+
+build.dependsOn obfuscateRemappedJar
+
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories { }
+}
